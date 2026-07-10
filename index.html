@@ -523,7 +523,7 @@
     </div>
 
     <script>\n
-    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxBZPKys2bSUk6heqbQyHBIAbaOFd7TscW10mAg0o-ZEFQ35HOd4vcUEgS98Xb_NSz1LA/exec";
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbxW5x0iWE7Mfx11mXeY2gH_BqLC2cqv0OXEqjM5nZ0bAJ54pfutcFYe5HHkPSnLrow12Q/exec";
     
     function fetchGasAPI(action, payload) {
         return new Promise((resolve, reject) => {
@@ -541,45 +541,39 @@
         });
     }
 
-    // Заглушка для совместимости со старым кодом
+    function createGasRunner(state = {}) {
+        return new Proxy(state, {
+            get: function(target, prop) {
+                if (prop === 'withSuccessHandler') {
+                    return function(cb) { return createGasRunner({ ...target, successCb: cb }); };
+                }
+                if (prop === 'withFailureHandler') {
+                    return function(cb) { return createGasRunner({ ...target, failCb: cb }); };
+                }
+                return function(...args) {
+                    let payload = {};
+                    if (prop === 'getInitialData') { payload = { userId: args[0] }; }
+                    else if (prop === 'toggleBookingInSheet') { payload = { containerId: args[0], userName: args[1], action: args[2] }; }
+                    else if (prop === 'deleteContainerInSheet') { payload = { containerId: args[0], userName: args[1] }; }
+                    else if (prop === 'restoreContainerInSheet') { payload = { item: args[0], userName: args[1] }; }
+                    else if (prop === 'save_dataset') { payload = args[0]; }
+                    else if (prop === 'toggleGlobalBookmark') { payload = { key: args[0], ids: args[1], actionString: args[2], baseTermName: args[3] }; }
+                    else if (prop === 'clearGlobalBookmarks') { payload = {}; }
+                    else if (prop === 'saveUserLocalState') { payload = { userId: args[0], history: args[1], deletedItems: args[2] }; }
+                    else if (prop === 'saveDeviceSession') { payload = { devId: args[0], userId: args[1], bg: args[2] }; }
+                    else if (prop === 'clearDeviceSession') { payload = { devId: args[0] }; }
+                    
+                    fetchGasAPI(prop, payload)
+                        .then(res => { if(target.successCb) target.successCb(res); })
+                        .catch(err => { if(target.failCb) target.failCb(err); else console.error(err); });
+                };
+            }
+        });
+    }
+
     const google = {
         script: {
-            run: {
-                withSuccessHandler: function(successCb) {
-                    return {
-                        withFailureHandler: function(failCb) {
-                            return new Proxy({}, {
-                                get: function(target, prop) {
-                                    return function(...args) {
-                                        // Имена параметров берем условно, для каждого метода свой payload
-                                        let payload = {};
-                                        if (prop === 'getInitialData') { payload = { userId: args[0] }; }
-                                        else if (prop === 'toggleBookingInSheet') { payload = { containerId: args[0], userName: args[1], action: args[2] }; }
-                                        else if (prop === 'deleteContainerInSheet') { payload = { containerId: args[0], userName: args[1] }; }
-                                        else if (prop === 'restoreContainerInSheet') { payload = { item: args[0], userName: args[1] }; }
-                                        else if (prop === 'save_dataset') { payload = args[0]; }
-                                        else if (prop === 'toggleGlobalBookmark') { payload = { key: args[0], ids: args[1], actionString: args[2], baseTermName: args[3] }; }
-                                        else if (prop === 'clearGlobalBookmarks') { payload = {}; }
-                                        
-                                        fetchGasAPI(prop, payload)
-                                            .then(res => { if(successCb) successCb(res); })
-                                            .catch(err => { if(failCb) failCb(err); else console.error(err); });
-                                    }
-                                }
-                            });
-                        }
-                    }
-                },
-                saveUserLocalState: function(userId, history, deletedItems) {
-                    fetchGasAPI('saveUserLocalState', { userId, history, deletedItems }).catch(e=>console.error(e));
-                },
-                saveDeviceSession: function(devId, userId, bg) {
-                    fetchGasAPI('saveDeviceSession', { devId, userId, bg }).catch(e=>console.error(e));
-                },
-                clearDeviceSession: function(devId) {
-                    fetchGasAPI('clearDeviceSession', { devId }).catch(e=>console.error(e));
-                }
-            }
+            run: createGasRunner()
         }
     };
 
