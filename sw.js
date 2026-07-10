@@ -1,5 +1,5 @@
-// CACHE v9 — FIX: new proxy
-const CACHE_NAME = 'cgg-app-cache-v9';
+// CACHE v10 — FIX: remove safe-area padding
+const CACHE_NAME = 'cgg-app-cache-v10';
 const urlsToCache = [
   './manifest.json',
   './icon-192.png',
