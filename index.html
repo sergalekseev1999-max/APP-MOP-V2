@@ -537,8 +537,7 @@
             })
             .then(res => res.json())
             .then(data => {
-                if (data.success !== false) resolve(data);
-                else reject(new Error(data.error || 'Unknown error'));
+                resolve(data);
             })
             .catch(err => reject(err));
         });
@@ -951,7 +950,7 @@
                             .withFailureHandler(function (err) {
                                 _dataLoaded = true;
                                 sysLog("ОШИБКА API: " + err.message, true);
-                                window.showToast("Критическая ошибка базы данных", 'red');
+                                window.showToast("Крит. ошибка базы: " + (err.message || err), 'red');
                                 window.hideLoader();
                                 window.state.screen = 'login';
                                 window.render();
