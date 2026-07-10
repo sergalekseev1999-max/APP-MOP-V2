@@ -16,14 +16,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-        // Принудительная очистка кэша PWA для версии 14
-        if (localStorage.getItem('pwa_version') !== '14') {
+        // Принудительная очистка кэша PWA для версии 15
+        if (localStorage.getItem('pwa_version') !== '15') {
             if ('caches' in window) {
                 caches.keys().then(function(names) {
                     for (let name of names) caches.delete(name);
                 });
             }
-            localStorage.setItem('pwa_version', '14');
+            localStorage.setItem('pwa_version', '15');
             window.location.reload(true);
         }
     </script>
@@ -340,7 +340,7 @@
 
         @supports (padding-top: env(safe-area-inset-top)) {
             .nav-safe {
-                padding-bottom: env(safe-area-inset-bottom) !important;
+                /* Убрано padding-bottom, пусть iOS сам ставит над safe-area */
             }
 
             #app-content {

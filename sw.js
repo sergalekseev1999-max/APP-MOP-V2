@@ -1,5 +1,5 @@
-// CACHE v14 — FIX: transparent safe area
-const CACHE_NAME = 'cgg-app-cache-v14';
+// CACHE v15 — FIX: remove all padding to let iOS handle safe area naturally
+const CACHE_NAME = 'cgg-app-cache-v15';
 const urlsToCache = [
   './manifest.json',
   './icon-192.png',
