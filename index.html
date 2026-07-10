@@ -926,9 +926,10 @@
             // ============================================================
 
             var userId = safeStorage.getItem('ktk_user_id');
+            if (userId === 'null' || userId === 'undefined') userId = null;
 
             // Если localStorage пуст — пробуем взять из URL (от PWA оболочки)
-            if (!userId && window._URL_UID) {
+            if (!userId && window._URL_UID && window._URL_UID !== 'null') {
                 userId = window._URL_UID;
                 safeStorage.setItem('ktk_user_id', userId);
             }
