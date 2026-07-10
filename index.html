@@ -16,14 +16,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-        // Принудительная очистка кэша PWA для версии 11
-        if (localStorage.getItem('pwa_version') !== '11') {
+        // Принудительная очистка кэша PWA для версии 14
+        if (localStorage.getItem('pwa_version') !== '14') {
             if ('caches' in window) {
                 caches.keys().then(function(names) {
                     for (let name of names) caches.delete(name);
                 });
             }
-            localStorage.setItem('pwa_version', '11');
+            localStorage.setItem('pwa_version', '14');
             window.location.reload(true);
         }
     </script>
