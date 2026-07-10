@@ -1,5 +1,5 @@
-// CACHE v13 — FIX: nav bar restore padding
-const CACHE_NAME = 'cgg-app-cache-v13';
+// CACHE v14 — FIX: transparent safe area
+const CACHE_NAME = 'cgg-app-cache-v14';
 const urlsToCache = [
   './manifest.json',
   './icon-192.png',
