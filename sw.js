@@ -1,5 +1,5 @@
-// CACHE v8 — FIX: skip cross-origin requests
-const CACHE_NAME = 'cgg-app-cache-v8';
+// CACHE v9 — FIX: new proxy
+const CACHE_NAME = 'cgg-app-cache-v9';
 const urlsToCache = [
   './manifest.json',
   './icon-192.png',
