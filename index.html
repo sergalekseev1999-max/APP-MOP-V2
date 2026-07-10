@@ -340,8 +340,7 @@
 
         @supports (padding-top: env(safe-area-inset-top)) {
             .nav-safe {
-                /* Принудительно опускаем меню в самый низ экрана, игнорируя safe-area */
-                margin-bottom: calc(-1 * env(safe-area-inset-bottom)) !important;
+                padding-bottom: env(safe-area-inset-bottom) !important;
             }
 
             #app-content {

@@ -1,5 +1,5 @@
-// CACHE v12 — FIX: nav bar negative margin
-const CACHE_NAME = 'cgg-app-cache-v12';
+// CACHE v13 — FIX: nav bar restore padding
+const CACHE_NAME = 'cgg-app-cache-v13';
 const urlsToCache = [
   './manifest.json',
   './icon-192.png',
